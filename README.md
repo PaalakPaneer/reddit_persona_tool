@@ -28,6 +28,7 @@ pip install -r requirements.txt
 - `python-dotenv`
 - `jinja2`
 - `pdfkit`
+- `requests`
 
 ### External dependency (for PDF generation)
 

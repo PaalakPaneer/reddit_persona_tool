@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Persona Report: u/{{ name or "Unknown" }}</title>
+  <title>User Persona Report: u/{{ username }}</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       color: #222;
-      background: #f4f4f9;
+      background: #f9f9fc;
       padding: 40px;
     }
     .container {
@@ -16,29 +16,38 @@
       background: white;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     h1, h2 {
-      color: #444;
+      color: #333;
     }
     ul {
       padding-left: 20px;
+    }
+    li {
+      margin-bottom: 6px;
     }
     .section {
       margin-bottom: 30px;
     }
     .citation {
       font-size: 0.9em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      border-left: 3px solid #ddd;
+      padding-left: 10px;
     }
     .subtle {
-      color: #777;
+      color: #666;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>User Persona: u/{{ name or "Unknown" }}</h1>
+    <h1>User Persona: {{ name or username }}</h1>
     <div class="subtle">Archetype: {{ archetype }}</div>
 
     <div class="section">
@@ -53,36 +62,35 @@
     <div class="section">
       <h2>Traits</h2>
       <ul>
-        {% for trait in traits %}<li>{{ trait }}</li>{% endfor %}
+        {% for trait in traits %}
+          <li>{{ trait }}</li>
+        {% endfor %}
       </ul>
     </div>
 
     <div class="section">
       <h2>Interests</h2>
       <ul>
-        {% for interest in interests %}<li>{{ interest }}</li>{% endfor %}
+        {% for interest in interests %}
+          {% if interest.strip() %}<li>{{ interest.strip() }}</li>{% endif %}
+        {% endfor %}
       </ul>
     </div>
 
     <div class="section">
       <h2>Frustrations</h2>
       <ul>
-        {% for f in frustrations %}<li>{{ f }}</li>{% endfor %}
+        {% for fr in frustrations %}
+          {% if fr.strip() %}<li>{{ fr.strip() }}</li>{% endif %}
+        {% endfor %}
       </ul>
     </div>
 
     <div class="section">
       <h2>Motivations</h2>
       <ul>
-        {% for m in motivations %}<li>{{ m }}</li>{% endfor %}
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Personality Insights</h2>
-      <ul>
-        {% for key, value in personality_insights.items() %}
-          <li><strong>{{ key.replace("_", " ").title() }}:</strong> {{ value }}</li>
+        {% for m in motivations %}
+          {% if m.strip() %}<li>{{ m.strip() }}</li>{% endif %}
         {% endfor %}
       </ul>
     </div>
@@ -95,7 +103,9 @@
     <div class="section">
       <h2>Favorite Subreddits</h2>
       <ul>
-        {% for s in favorite_subreddits %}<li>{{ s }}</li>{% endfor %}
+        {% for sub in favorite_subreddits %}
+          <li>r/{{ sub }}</li>
+        {% endfor %}
       </ul>
     </div>
 
@@ -103,8 +113,8 @@
       <h2>Citations</h2>
       {% for c in citations %}
         <div class="citation">
-          <strong>r/{{ c.subreddit }}</strong>: "{{ c.snippet }}"<br>
-          <a href="{{ c.link }}">{{ c.link }}</a>
+          <strong>r/{{ c.subreddit }}</strong>: "{{ c.quote }}"<br>
+          <a href="{{ c.url }}">{{ c.url }}</a>
         </div>
       {% endfor %}
     </div>

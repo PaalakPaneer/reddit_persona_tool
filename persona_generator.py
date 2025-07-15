@@ -30,7 +30,6 @@ def get_reddit_username(url: str) -> str:
 
 
 def scrape_user_data(username: str, limit: int = 50):
-    #Scrapes recent posts and comments from a Reddit user.
     user = reddit.redditor(username)
     posts = []
     comments = []
@@ -61,46 +60,38 @@ def scrape_user_data(username: str, limit: int = 50):
 
 
 def generate_persona_with_gpt(username: str, posts: list, comments: list) -> dict:
-    #Sends Reddit data to GPT and returns the generated persona.
     prompt = f"""
-You are an expert researcher tasked with writing a detailed and expressive user persona from a Reddit user's public posts and comments.
+You are an AI researcher tasked with building a psychological and behavioral profile of a Reddit user from their public posts and comments.
 
-Below is activity from Reddit user u/{username}. Your goal is to analyze their behavioral signals and **write a full narrative-style persona document** that covers:
+Output a JSON object with the following keys (no markdown, no extra text, JSON only!):
 
----
+- Name
+- Archetype
+- Basic Demographics:
+    - Age
+    - Location
+    - Occupation
+    - Social Status
+- Personality & Traits:
+    - Description
+- Writing Style:
+    - Expression
+- Habits & Behavior:
+    - Common Behaviors
+- Motivations:
+    - Driving Factors (Provide 3–5 distinct, specific points)
+- Frustrations:
+    - Challenges (Provide 3–5 distinct, specific points)
+- Interests & Communities:
+    - Interests (Provide 3–5 distinct, specific points)
+    - Active Subreddits
+- Citations:
+    - A list of 5+ objects with:
+        - quote
+        - subreddit
+        - url
 
-1. **Name & Archetype**  
-Suggest a persona name (even a made-up one is fine) and assign a Jungian-style archetype (The Creator, The Seeker, The Sage, etc.).
-
-2. **Basic Demographics**  
-Age range, possible location (city/country), occupation guess, and anything that points to their social status or lifestyle.
-
-3. **Personality & Traits**  
-Describe personality in natural language, including MBTI-style insights (e.g., “She’s likely an ENFP – extroverted, intuitive, and spontaneous.”)
-
-4. **Writing Style**  
-Describe how they express themselves online — slang use, humor, tone, verbosity, spelling, grammar, sentence structure, etc.
-
-5. **Habits & Behavior**  
-Summarize their most common behaviors, e.g., do they post more than comment? Do they engage in NSFW content? What themes recur?
-
-6. **Motivations**  
-What drives this person to post? Express themselves? Connect with communities? Think about psychological drivers.
-
-7. **Frustrations**  
-What annoys them, frustrates them, or comes through as emotional pain points in their posts?
-
-8. **Interests & Communities**  
-Which subreddits are they active in? What hobbies, fandoms, or internet cultures do they belong to?
-
-9. **Citations**  
-Give at least 5 post or comment snippets (with subreddit name and link) that justify your conclusions. These should be short quotes (1–2 sentences each).
-
----
-
-Make the result rich in personality, formatted for a designer/marketer audience. 
-IMPORTANT: Output must be valid JSON ONLY — no Markdown, no bullet points, no explanation, no code formatting. Just pure JSON.
-Make sure all fields are present and well-structured.
+Make sure each list field (Interests, Motivations, Frustrations, etc.) contains multiple specific entries, not a single paragraph or sentence.
 
 Reddit Posts:
 {json.dumps(posts[:20], indent=2)}
@@ -108,39 +99,122 @@ Reddit Posts:
 Reddit Comments:
 {json.dumps(comments[:20], indent=2)}
 """
-    print("🧠 Sending data to OpenAI...")
+
+    print("Sending data to OpenAI...")
 
     response = openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
+        messages=[{"role": "user", "content": prompt}],
         temperature=0.7
     )
 
     result = response.choices[0].message.content.strip()
 
     try:
-        persona_data = json.loads(result)
-        # Force specific fields to be lists if they’re returned as strings
-        for key in ["traits", "interests", "frustrations", "motivations", "favorite_subreddits"]:
-            if isinstance(persona_data.get(key), str):
-                persona_data[key] = [persona_data[key]]
-        return persona_data
+        return json.loads(result)
     except json.JSONDecodeError:
-        print("⚠️ GPT returned non-JSON content. Saving raw response.")
+        print("GPT returned non-JSON content. Saving raw response.")
         return {"raw_response": result}
 
 
-def save_persona(username: str, persona_data: dict) -> str:
-    #Saves the generated persona to a JSON file.
+def save_persona(username: str, persona_data: dict):
     os.makedirs("data", exist_ok=True)
     filepath = os.path.join("data", f"{username}_persona.json")
-    with open(filepath, "w", encoding="utf-8") as file:
-        json.dump(persona_data, file, indent=2, ensure_ascii=False)
-    print(f"✅ Persona saved to {filepath}")
-    return filepath
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(persona_data, f, indent=2, ensure_ascii=False)
+    print(f"Persona saved to {filepath}")
 
+
+def save_persona_txt(username: str, persona_data: dict):
+    os.makedirs("output", exist_ok=True)
+    filepath = os.path.join("output", f"{username}_persona.txt")
+
+    if "raw_response" in persona_data:
+        print("GPT response was invalid JSON, cannot save .txt persona.")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write("GPT response could not be parsed. Raw content below:\n\n")
+            f.write(persona_data["raw_response"])
+        return
+
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(f"User Persona: u/{username}\n")
+        f.write(f"Name: {persona_data.get('Name', 'N/A')}\n")
+        f.write(f"Archetype: {persona_data.get('Archetype', 'N/A')}\n\n")
+
+        # Basic Info
+        f.write("Basic Info\n")
+        basic = persona_data.get("Basic Demographics", {})
+        f.write(f"Age Range: {basic.get('Age', 'N/A')}\n")
+        f.write(f"Location: {basic.get('Location', 'N/A')}\n")
+        f.write(f"Occupation: {basic.get('Occupation', 'N/A')}\n")
+        f.write(f"Social Status: {basic.get('Social Status', 'N/A')}\n\n")
+
+        # Traits
+        f.write("Personality & Traits\n")
+        traits = persona_data.get("Personality & Traits", {})
+        f.write(f"{traits.get('Description', 'N/A')}\n\n")
+
+        # Writing Style
+        f.write("Writing Style\n")
+        writing = persona_data.get("Writing Style", {})
+        f.write(f"Expression: {writing.get('Expression', 'N/A')}\n\n")
+
+        # Habits
+        f.write("Habits & Behavior\n")
+        habits = persona_data.get("Habits & Behavior", {})
+        f.write(f"{habits.get('Common Behaviors', 'N/A')}\n\n")
+
+        # Motivations
+        f.write("Motivations\n")
+        motiv = persona_data.get("Motivations", {}).get("Driving Factors", [])
+        if isinstance(motiv, list):
+            for m in motiv:
+                f.write(f"- {m}\n")
+        else:
+            f.write(f"{motiv}\n")
+        f.write("\n")
+
+        # Frustrations
+        f.write("Frustrations\n")
+        frust = persona_data.get("Frustrations", {}).get("Challenges", [])
+        if isinstance(frust, list):
+            for fr in frust:
+                f.write(f"- {fr}\n")
+        else:
+            f.write(f"{frust}\n")
+        f.write("\n")
+
+        # Interests
+        f.write("Interests & Communities\n")
+        interests = persona_data.get("Interests & Communities", {})
+        f.write("Active Subreddits:\n")
+        for sub in interests.get("Active Subreddits", []):
+            f.write(f"- r/{sub}\n")
+        f.write("\nInterests:\n")
+        for interest in interests.get("Interests", []):
+            f.write(f"- {interest}\n")
+        f.write("\n")
+
+        # Citations
+        f.write("Citations\n")
+        for cite in persona_data.get("Citations", []):
+            f.write(f"{cite.get('subreddit', '')}: \"{cite.get('quote', '')}\"\n")
+            f.write(f"{cite.get('url', '')}\n\n")
+
+    print(f"Text file saved to {filepath}")
+
+def normalize_list_fields(persona_data):
+    """Ensure Interests and Subreddits are always lists."""
+    communities = persona_data.get("Interests & Communities", {})
+
+    if isinstance(communities.get("Interests"), str):
+        communities["Interests"] = [s.strip() for s in communities["Interests"].split(",")]
+
+    if isinstance(communities.get("Active Subreddits"), str):
+        communities["Active Subreddits"] = [s.strip() for s in communities["Active Subreddits"].split(",")]
+
+    persona_data["Interests & Communities"] = communities
+    return persona_data
 
 def main():
     if len(sys.argv) != 2:
@@ -151,13 +225,16 @@ def main():
     username = get_reddit_username(url)
     print(f"Username extracted: u/{username}")
 
-    print(f"🔍 Scraping Reddit data for u/{username}...")
+    print(f"Scraping Reddit data for u/{username}...")
     posts, comments = scrape_user_data(username)
 
-    print(f"🧠 Generating persona for u/{username}...")
+    print(f"Generating persona for u/{username}...")
     persona_data = generate_persona_with_gpt(username, posts, comments)
+    persona_data = normalize_list_fields(persona_data)
 
     save_persona(username, persona_data)
+    print(f"Generating .txt file for u/{username}...")
+    save_persona_txt(username, persona_data)
 
 
 if __name__ == "__main__":
