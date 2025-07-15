@@ -1,6 +1,7 @@
 # Reddit Persona Generator
 
 Generate a detailed psychological and behavioral profile for any public Reddit user using OpenAI GPT models and their Reddit activity.
+(Sample outputs available in the output folder)
 
 ---
 
@@ -9,6 +10,7 @@ Generate a detailed psychological and behavioral profile for any public Reddit u
 - 🔍 Scrapes a Reddit user’s posts and comments using the **PRAW** library  
 - 🧠 Sends the data to OpenAI’s GPT model to build a structured persona  
 - 🗂 Outputs a clean **JSON file** with citations and personality traits  
+- 🖨️ Generates a **.txt file**  
 - 🖨️ Generates a **styled PDF report** using Jinja2 and `pdfkit`  
 
 ---
@@ -89,6 +91,7 @@ This will:
 - Scrape up to 50 posts and comments
 - Send the data to OpenAI
 - Save a persona file in `data/USERNAME_persona.json`
+- Save a .txt file in `output/USERNAME_persona.txt`
 
 ---
 
