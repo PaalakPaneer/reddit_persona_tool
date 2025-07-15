@@ -30,7 +30,7 @@ def get_reddit_username(url: str) -> str:
 
 
 def scrape_user_data(username: str, limit: int = 50):
-    """Scrapes recent posts and comments from a Reddit user."""
+    #Scrapes recent posts and comments from a Reddit user.
     user = reddit.redditor(username)
     posts = []
     comments = []
@@ -61,7 +61,7 @@ def scrape_user_data(username: str, limit: int = 50):
 
 
 def generate_persona_with_gpt(username: str, posts: list, comments: list) -> dict:
-    """Sends Reddit data to GPT-4 and returns the generated persona."""
+    #Sends Reddit data to GPT and returns the generated persona.
     prompt = f"""
 You are an expert researcher tasked with writing a detailed and expressive user persona from a Reddit user's public posts and comments.
 
@@ -122,7 +122,7 @@ Reddit Comments:
 
     try:
         persona_data = json.loads(result)
-        # 🔧 Force specific fields to be lists if they’re mistakenly returned as strings
+        # Force specific fields to be lists if they’re returned as strings
         for key in ["traits", "interests", "frustrations", "motivations", "favorite_subreddits"]:
             if isinstance(persona_data.get(key), str):
                 persona_data[key] = [persona_data[key]]
@@ -133,7 +133,7 @@ Reddit Comments:
 
 
 def save_persona(username: str, persona_data: dict) -> str:
-    """Saves the generated persona to a JSON file."""
+    #Saves the generated persona to a JSON file.
     os.makedirs("data", exist_ok=True)
     filepath = os.path.join("data", f"{username}_persona.json")
     with open(filepath, "w", encoding="utf-8") as file:
@@ -143,7 +143,6 @@ def save_persona(username: str, persona_data: dict) -> str:
 
 
 def main():
-    """Main entry point for the script."""
     if len(sys.argv) != 2:
         print("Usage: python persona_generator.py https://www.reddit.com/user/USERNAME/")
         return

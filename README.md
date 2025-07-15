@@ -1,6 +1,6 @@
 # Reddit Persona Generator
 
-Generate a detailed psychological and behavioral persona for any public Reddit user using OpenAI GPT models and their Reddit activity.
+Generate a detailed psychological and behavioral profile for any public Reddit user using OpenAI GPT models and their Reddit activity.
 
 ---
 
@@ -75,7 +75,7 @@ pip install -r requirements.txt
 
 ---
 
-## 📥 How to Use
+## How to Use
 
 ### 1. Generate JSON Persona
 
@@ -106,23 +106,7 @@ This will:
 
 ---
 
-## 🗂 File Structure
-
-```
-.
-├── persona_generator.py       # Reddit scraper + GPT persona builder
-├── generate_pdf.py            # HTML-to-PDF converter
-├── templates/
-│   └── persona_template.html  # Jinja2 template for PDF styling
-├── data/                      # Stores persona JSON files
-├── output/                    # Stores PDF reports
-├── requirements.txt
-└── .env                       # Your secret keys (not to be pushed!)
-```
-
----
-
-## 🔐 Important Notes
+## Important Notes
 
 - Make sure **`.env` is listed in your `.gitignore`**
 - The GPT response must be valid JSON — no Markdown or extra formatting
@@ -130,7 +114,7 @@ This will:
 
 ---
 
-## ✅ To Do
+## To Do
 
 - Retry logic for OpenAI API failures  
 - Scrape more than 50 items  
@@ -138,7 +122,3 @@ This will:
 - Improve PDF design and color scheme  
 
 ---
-
-## 🧠 License
-
-MIT License (or your preferred license)

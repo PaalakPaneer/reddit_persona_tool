@@ -1,6 +1,6 @@
 openai
 praw
 jinja2
-weasyprint
+pdfkit
 requests
 python-dotenv
