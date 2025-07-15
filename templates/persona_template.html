@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Persona Report: u/{{ name or "Unknown" }}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #222;
+      background: #f4f4f9;
+      padding: 40px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #444;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .citation {
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+    .subtle {
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Persona: u/{{ name or "Unknown" }}</h1>
+    <div class="subtle">Archetype: {{ archetype }}</div>
+
+    <div class="section">
+      <h2>Basic Info</h2>
+      <ul>
+        <li><strong>Age Range:</strong> {{ age_range }}</li>
+        <li><strong>Location Guess:</strong> {{ location_guess }}</li>
+        <li><strong>Occupation Guess:</strong> {{ occupation_guess }}</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Traits</h2>
+      <ul>
+        {% for trait in traits %}<li>{{ trait }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Interests</h2>
+      <ul>
+        {% for interest in interests %}<li>{{ interest }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Frustrations</h2>
+      <ul>
+        {% for f in frustrations %}<li>{{ f }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Motivations</h2>
+      <ul>
+        {% for m in motivations %}<li>{{ m }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Personality Insights</h2>
+      <ul>
+        {% for key, value in personality_insights.items() %}
+          <li><strong>{{ key.replace("_", " ").title() }}:</strong> {{ value }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Writing Style</h2>
+      <p>{{ writing_style }}</p>
+    </div>
+
+    <div class="section">
+      <h2>Favorite Subreddits</h2>
+      <ul>
+        {% for s in favorite_subreddits %}<li>{{ s }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Citations</h2>
+      {% for c in citations %}
+        <div class="citation">
+          <strong>r/{{ c.subreddit }}</strong>: "{{ c.snippet }}"<br>
+          <a href="{{ c.link }}">{{ c.link }}</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

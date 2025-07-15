@@ -1,0 +1,6 @@
+openai
+praw
+jinja2
+weasyprint
+requests
+python-dotenv
