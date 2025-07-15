@@ -1,126 +1,144 @@
-Reddit Persona Generator
+# Reddit Persona Generator
+
 Generate a detailed psychological and behavioral persona for any public Reddit user using OpenAI GPT models and their Reddit activity.
 
-Features
-Scrapes a Reddit user’s posts and comments using the PRAW library.
+---
 
-Sends the data to OpenAI’s GPT model to build a structured persona.
+## Features
 
-Outputs a clean JSON file with citations.
+- 🔍 Scrapes a Reddit user’s posts and comments using the **PRAW** library  
+- 🧠 Sends the data to OpenAI’s GPT model to build a structured persona  
+- 🗂 Outputs a clean **JSON file** with citations and personality traits  
+- 🖨️ Generates a **styled PDF report** using Jinja2 and `pdfkit`  
 
-Optional: Generate a styled PDF report using Jinja2 templates and pdfkit.
+---
 
-Dependencies
-Install all required Python packages using:
+## Dependencies
 
-nginx
-Copy
-Edit
+Install all Python packages:
+
+```bash
 pip install -r requirements.txt
-Python packages:
+```
 
-praw
+### Python packages:
 
-openai
+- `praw`
+- `openai`
+- `python-dotenv`
+- `jinja2`
+- `pdfkit`
 
-python-dotenv
+### External dependency (for PDF generation)
 
-jinja2
-
-pdfkit
-
-External dependency (required for PDF generation):
-
-wkhtmltopdf (must be installed separately)
-
-Install wkhtmltopdf
-Download from:
-
-https://wkhtmltopdf.org/downloads.html
+You must install [`wkhtmltopdf`](https://wkhtmltopdf.org/downloads.html) manually.
 
 After installation:
 
-Ensure it is added to your system PATH (you can select this during install).
+- Ensure it's added to your system **PATH** (select this during install)
+- Or manually add the binary path:
+  ```
+  C:\Program Files\wkhtmltopdf\bin
+  ```
 
-Or manually add the binary path to your environment:
+Verify with:
 
-C:\Program Files\wkhtmltopdf\bin
-
-To confirm installation:
-
+```bash
 wkhtmltopdf --version
-Setup
-Clone the repository:
+```
 
-git clone https://github.com/your-username/reddit-persona-generator
+---
 
-Create a .env file in the project root with the following content:
+## Setup
 
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/reddit-persona-generator.git
+cd reddit-persona-generator
+```
+
+2. **Create a `.env` file** in the root directory:
+
+```
 OPENAI_API_KEY=your_openai_key_here
 REDDIT_CLIENT_ID=your_reddit_client_id
 REDDIT_CLIENT_SECRET=your_reddit_client_secret
 REDDIT_USER_AGENT=any_user_agent_description
+```
 
-Install dependencies:
+3. **Install dependencies**
 
+```bash
 pip install -r requirements.txt
+```
 
-How to Use
-1. Generate JSON Persona
-Run the following command:
+---
 
-ruby
-Copy
-Edit
+## 📥 How to Use
+
+### 1. Generate JSON Persona
+
+```bash
 python persona_generator.py https://www.reddit.com/user/USERNAME/
+```
+
 This will:
+- Extract the Reddit username
+- Scrape up to 50 posts and comments
+- Send the data to OpenAI
+- Save a persona file in `data/USERNAME_persona.json`
 
-Extract the Reddit username
+---
 
-Scrape recent posts and comments (up to 50 each)
+### 2. Generate PDF Report (Optional)
 
-Send the data to OpenAI
+Make sure `wkhtmltopdf` is installed and accessible via PATH.
 
-Save the persona as a JSON file in the data/ folder
-
-2. Generate PDF Report (optional)
-Make sure wkhtmltopdf is installed and on your system PATH.
-
-Then run:
-
-nginx
-Copy
-Edit
+```bash
 python generate_pdf.py USERNAME
+```
+
 This will:
+- Load the JSON file from `data/`
+- Render a Jinja2 HTML template
+- Output a PDF to `output/USERNAME_persona.pdf`
 
-Load the JSON file from data/USERNAME_persona.json
+---
 
-Render a styled HTML template
+## 🗂 File Structure
 
-Generate a PDF in the output/ folder
+```
+.
+├── persona_generator.py       # Reddit scraper + GPT persona builder
+├── generate_pdf.py            # HTML-to-PDF converter
+├── templates/
+│   └── persona_template.html  # Jinja2 template for PDF styling
+├── data/                      # Stores persona JSON files
+├── output/                    # Stores PDF reports
+├── requirements.txt
+└── .env                       # Your secret keys (not to be pushed!)
+```
 
-File Structure
-persona_generator.py — Reddit scraper + GPT persona builder
+---
 
-generate_pdf.py — HTML-to-PDF converter
+## 🔐 Important Notes
 
-templates/persona_template.html — Jinja2 template for the PDF
+- Make sure **`.env` is listed in your `.gitignore`**
+- The GPT response must be valid JSON — no Markdown or extra formatting
+- Use GPT-4 or GPT-3.5-turbo depending on your access level
 
-data/ — stores JSON persona files
+---
 
-output/ — stores generated PDF reports
+## ✅ To Do
 
-Notes
-The OpenAI output must be valid JSON only. Markdown, code blocks, or extra text will break the parser.
+- Retry logic for OpenAI API failures  
+- Scrape more than 50 items  
+- Add charts or visuals to the PDF  
+- Improve PDF design and color scheme  
 
-For best results, use gpt-4 or gpt-3.5-turbo if you don’t have GPT-4 access.
+---
 
-To Do (Optional Enhancements)
-Add retry logic for OpenAI API failures
+## 🧠 License
 
-Enable scraping more than 50 items
-
-Improve template styling
-
-Add charts/visuals to the PDF
+MIT License (or your preferred license)
