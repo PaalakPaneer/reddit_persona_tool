@@ -1,0 +1,56 @@
+User Persona: u/kojied
+Name: VisionProEnthusiast
+Archetype: Tech Enthusiast
+
+Basic Info
+Age Range: Late 20s to early 30s
+Location: New York City
+Occupation: iOS developer
+Social Status: Active member of technology and vision-related communities
+
+Personality & Traits
+Curious, forward-thinking, tech-savvy, innovative
+
+Writing Style
+Expression: Detailed, analytical, tech-focused
+
+Habits & Behavior
+Engaging with technology-related subreddits, sharing insights and experiences, seeking recommendations for learning resources
+
+Motivations
+- Exploring new features and advancements in spacial computing
+- Building a strong network within the tech community
+- Contributing to the future of augmented and virtual reality technologies
+
+Frustrations
+- Limited access to specific tools or resources for spacial computing development
+- Slow progress in integrating AR/VR technologies into everyday workflows
+- Difficulty in fully adopting AVP for work due to software limitations
+
+Interests & Communities
+Active Subreddits:
+- r/VisionPro
+- r/visionosdev
+- r/ChatGPT
+
+Interests:
+- Spacial computing
+- AR/VR technologies
+- iOS development
+
+Citations
+VisionPro: "I just find this to be much easier than doing it on my Mac + display setup. Give it a try"
+https://www.reddit.com/r/VisionPro/comments/1alf7av/killer_feature_accessing_chatgpt_ipad_app_and/
+
+visionosdev: "Hey I’m an iOS developer building in visionOS. Do people have recommendations on resources to catch up on new featuresets for spacial computing?"
+https://www.reddit.com/r/visionosdev/comments/1b3yugb/best_blogs_tutorial_channels_to_learn/
+
+ChatGPT: "I used AI to create this short film on human"
+https://www.reddit.com/r/ChatGPT/comments/1lvtwj3/i_used_ai_to_create_this_short_film_on_human/n2b07h0/
+
+ChatGPT: "Incredible stuff! How did you maintain character consistency? Did you generate a consistent character image and then use the image-to-video feature?"
+https://www.reddit.com/r/ChatGPT/comments/1lvtwj3/i_used_ai_to_create_this_short_film_on_human/n2b07h0/
+
+ManorLords: "I do too but I rarely finish a game haha. Too little late game content"
+https://www.reddit.com/r/ManorLords/comments/1lse9cn/great_game_i_hope_there_is_something_new_added_in/n1i52vu/
+
