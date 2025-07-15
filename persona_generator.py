@@ -204,7 +204,7 @@ def save_persona_txt(username: str, persona_data: dict):
     print(f"Text file saved to {filepath}")
 
 def normalize_list_fields(persona_data):
-    """Ensure Interests and Subreddits are always lists."""
+    #Ensure Interests and Subreddits are always lists.
     communities = persona_data.get("Interests & Communities", {})
 
     if isinstance(communities.get("Interests"), str):
